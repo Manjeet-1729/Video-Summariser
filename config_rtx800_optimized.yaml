@@ -1,0 +1,83 @@
+# Optimized Configuration for Dual NVIDIA Quadro RTX 8000
+# Total VRAM: 96GB (2x 48GB)
+
+# Model configurations - Using larger models for better quality
+models:
+  blip2:
+    model_name: "Salesforce/blip2-flan-t5-xl"  # Upgraded from 2.7b
+    device: "cuda:0"  # Use first GPU
+  
+  whisper:
+    model_name: "large-v2"  # Upgraded to largest Whisper model
+    device: "cuda:0"  # Share first GPU with BLIP-2
+  
+  t5:
+    model_name: "t5-large"  # Upgraded from base (770M params)
+    max_input_length: 2048  # Increased from 1024
+    max_output_length: 512  # Increased from 256
+    device: "cuda:1"  # Use second GPU for training
+
+# Video processing - Extract more frames for better quality
+video_processing:
+  frame_extraction:
+    fps: 2  # 2 frames per second (doubled from default)
+    max_frames: 100  # 100 frames max (doubled from default)
+  
+  audio_extraction:
+    sample_rate: 16000
+
+# Training configuration - Optimized for dual RTX 8000
+training:
+  batch_size: 16  # Large batch size (you have the VRAM!)
+  gradient_accumulation_steps: 2  # Effective batch size: 32
+  num_epochs: 15  # More epochs for better convergence
+  learning_rate: 3e-5  # Adjusted for larger model
+  warmup_steps: 1000  # More warmup steps
+  weight_decay: 0.01
+  max_grad_norm: 1.0
+  save_steps: 500  # Save more frequently
+  eval_steps: 250  # Evaluate more frequently
+  logging_steps: 50
+  output_dir: "./outputs"
+  checkpoint_dir: "./checkpoints"
+  
+  # Multi-GPU settings
+  use_multi_gpu: true
+  device_ids: [1]  # Train T5 on second GPU (BLIP-2/Whisper on first)
+  
+# Data configuration
+data:
+  train_data_path: "./data/train"
+  val_data_path: "./data/val"
+  test_data_path: "./data/test"
+  processed_data_dir: "./data/processed"
+  
+# Inference configuration - Higher quality settings
+inference:
+  beam_size: 8  # Increased beam search
+  temperature: 0.9  # Slightly more focused
+  top_p: 0.92
+  repetition_penalty: 1.3
+  length_penalty: 1.0  # Balance length
+  no_repeat_ngram_size: 3  # Avoid repetition
+
+# System configuration
+system:
+  num_workers: 8  # More workers for data loading
+  seed: 42
+  use_wandb: true
+  wandb_project: "video-summarizer-rtx8000"
+  
+  # Memory optimization
+  mixed_precision: true  # Use FP16 for faster training
+  pin_memory: true  # Faster data transfer to GPU
+  
+# Performance settings
+performance:
+  # Preprocessing can use both GPUs
+  parallel_preprocessing: true
+  preprocessing_batch_size: 8  # Process multiple videos in parallel
+  
+  # Cache settings
+  cache_features: true  # Cache BLIP-2/Whisper outputs
+  cache_dir: "./cache"

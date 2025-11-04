@@ -1,0 +1,36 @@
+# Core dependencies
+torch>=2.0.0
+torchvision>=0.15.0
+transformers>=4.30.0
+accelerate>=0.20.0
+
+# Video and audio processing
+opencv-python>=4.8.0
+moviepy>=1.0.3
+ffmpeg-python>=0.2.0
+
+# Audio transcription
+openai-whisper>=20230314
+soundfile>=0.12.1
+
+# Image captioning
+salesforce-lavis>=1.0.0
+pillow>=9.5.0
+
+# Data handling
+pandas>=2.0.0
+numpy>=1.24.0
+datasets>=2.12.0
+
+# Training utilities
+wandb>=0.15.0
+tqdm>=4.65.0
+scikit-learn>=1.3.0
+
+# Evaluation
+rouge-score>=0.1.2
+nltk>=3.8.1
+
+# Utilities
+python-dotenv>=1.0.0
+pyyaml>=6.0

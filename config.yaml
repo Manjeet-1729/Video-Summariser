@@ -1,0 +1,61 @@
+# Configuration file for Video Summarizer
+
+# Model configurations
+models:
+  blip2:
+    model_name: "Salesforce/blip2-opt-2.7b"
+    device: "cuda"  # or "cpu"
+  
+  whisper:
+    model_name: "base"  # tiny, base, small, medium, large
+    device: "cuda"
+  
+  t5:
+    model_name: "t5-base"  # t5-small, t5-base, t5-large
+    max_input_length: 1024
+    max_output_length: 256
+
+# Video processing
+video_processing:
+  frame_extraction:
+    fps: 1  # Extract 1 frame per second
+    max_frames: 50  # Maximum frames to extract per video
+  
+  audio_extraction:
+    sample_rate: 16000
+
+# Training configuration
+training:
+  batch_size: 4
+  gradient_accumulation_steps: 4
+  num_epochs: 10
+  learning_rate: 5e-5
+  warmup_steps: 500
+  weight_decay: 0.01
+  max_grad_norm: 1.0
+  save_steps: 1000
+  eval_steps: 500
+  logging_steps: 100
+  output_dir: "./outputs"
+  checkpoint_dir: "./checkpoints"
+  
+# Data configuration
+data:
+  train_data_path: "./data/train"
+  val_data_path: "./data/val"
+  test_data_path: "./data/test"
+  processed_data_dir: "./data/processed"
+  
+# Inference configuration
+inference:
+  beam_size: 4
+  temperature: 1.0
+  top_p: 0.9
+  repetition_penalty: 1.2
+
+# System configuration
+system:
+  num_workers: 4
+  seed: 42
+  use_wandb: true
+  wandb_project: "video-summarizer"
