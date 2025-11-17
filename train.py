@@ -30,7 +30,10 @@ class Trainer:
             config: Configuration dictionary
         """
         self.config = config
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        
+        # Get device from config or default to cuda
+        model_device = config.get("models", {}).get("t5", {}).get("device", "cuda")
+        self.device = torch.device(model_device if torch.cuda.is_available() else "cpu")
         logger.info(f"Using device: {self.device}")
         
         # Initialize tokenizer and model
