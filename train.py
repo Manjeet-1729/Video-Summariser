@@ -94,10 +94,14 @@ class Trainer:
         num_training_steps = len(self.train_loader) * self.config["training"]["num_epochs"]
         num_training_steps //= self.config["training"]["gradient_accumulation_steps"]
         
+        # Ensure learning_rate is float
+        learning_rate = float(self.config["training"]["learning_rate"])
+        weight_decay = float(self.config["training"]["weight_decay"])
+        
         self.optimizer = AdamW(
             self.model.parameters(),
-            lr=self.config["training"]["learning_rate"],
-            weight_decay=self.config["training"]["weight_decay"]
+            lr=learning_rate,
+            weight_decay=weight_decay
         )
         
         self.scheduler = get_linear_schedule_with_warmup(
