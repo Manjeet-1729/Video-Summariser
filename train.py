@@ -240,7 +240,7 @@ class Trainer:
 
 def main():
     parser = argparse.ArgumentParser(description="Train T5 video summarization model")
-    parser.add_argument("--config", type=str, default="config.yaml", help="Path to config file")
+    parser.add_argument("--config", type=str, default="config_rtx800_optimized.yaml", help="Path to config file")
     args = parser.parse_args()
     
     # Load config
